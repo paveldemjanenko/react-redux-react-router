@@ -7,7 +7,12 @@
     "prestart:api": "node tools/createMockDb.js",
     "start:api": "node tools/apiServer.js",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "clean:build": "rimraf ./build && mkdir build",
+    "prebuild": "run-p clean:build test",
+    "build": "webpack --config webpack.config.prod.js",
+    "postbuild": "run-p start:api serve:build",
+    "serve:build": "http-server ./build"
   },
   "jest": {
     "setupFiles": [
