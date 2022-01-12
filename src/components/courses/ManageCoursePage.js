@@ -56,7 +56,7 @@ export function ManageCoursePage({
     if (!category) errors.category = "Category is required.";
 
     setErrors(errors);
-    // Form is valid if the errors object still ha no properties
+    // Form is valid if the errors object still has no properties
     return Object.keys(errors).length === 0;
   }
 
@@ -66,7 +66,7 @@ export function ManageCoursePage({
     setSvaing(true);
     saveCourse(course).then(() => {
       toast.success("Course saved.");
-      history.push("/courses")
+      history.push("/courses");
     })
     .catch(error => {
       setSvaing(false);
@@ -98,8 +98,8 @@ ManageCoursePage.propTypes = {
   history: PropTypes.object.isRequired
 };
 
-function getCourseBySlug(course, slug) {
-  return course.find(course => course.slug === slug) || null;
+function getCourseBySlug(courses, slug) {
+  return courses.find(course => course.slug === slug) || null;
 }
 
 function mapStateToProps(state, ownProps) {

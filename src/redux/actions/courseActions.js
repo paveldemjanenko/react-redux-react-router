@@ -35,7 +35,7 @@ export function loadCourses() {
 }
 
 export function saveCourse(course) {
-  //seconf prop allows to access redux store directly
+  //second prop allows to access redux store directly
   // return function(dispatch, getState) {
   return function(dispatch) {
     dispatch(beginApiCall());
