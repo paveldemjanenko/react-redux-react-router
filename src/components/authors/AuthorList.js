@@ -13,7 +13,6 @@ const AuthorList = ({ authors, onDeleteClick }) => (
       {authors.map(author => {
         return (
           <tr key={author.id}>
-            {console.log(author, 'AUTHOR')}
             <td>
               {author.name}
             </td>

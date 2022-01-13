@@ -66,9 +66,7 @@ function ManageAuthorPage({
   }
 
   return (
-    <>
-      {console.log(props, 'PROPS')}
-      <AuthorForm 
+    <AuthorForm 
       author={author}
       authors={authors}
       onChange={handleChange}
@@ -76,8 +74,6 @@ function ManageAuthorPage({
       saving={saving}
       errors={errors}
     />
-    </>
-
   );
 }
 
