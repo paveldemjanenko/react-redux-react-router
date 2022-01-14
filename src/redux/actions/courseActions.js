@@ -18,6 +18,10 @@ export function deleteCourseIptimistic(course) {
   return { type: types.DELETE_COURSE_OPTIMISTIC, course: course };
 }
 
+export function filterCourses(course) {
+  return { type: types.FILTER_COURSES, course};
+}
+
 //thunks
 export function loadCourses() {
   return function(dispatch) {

@@ -11,6 +11,8 @@ export default function courseReducer(state = initialState.courses, action) {
       return action.courses;
     case types.DELETE_COURSE_OPTIMISTIC:
       return state.filter(course => course.id !== action.course.id);
+    case types.FILTER_COURSES:
+       return state.filter(course => course.title === action.course.title);
     default:
       return state;
   }

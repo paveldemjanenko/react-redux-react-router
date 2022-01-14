@@ -10,3 +10,11 @@ nav {
 .form > h2, div {
   margin: 0 0 20px 0;
 }
+
+.course-filter > * {
+  display: inline;
+}
+
+.course-filter > select, button {
+  margin-left: 20px;
+}

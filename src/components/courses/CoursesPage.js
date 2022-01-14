@@ -4,14 +4,17 @@ import * as courseActions from '../../redux/actions/courseActions';
 import * as authorActions from '../../redux/actions/authorActions';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
-import CourseList from './CourseList';
 import { Redirect } from 'react-router-dom';
-import Spinner from '../common/Spinner';
 import { toast } from 'react-toastify';
+import Spinner from '../common/Spinner';
+import CourseList from './CourseList';
+import CourseFilter from './CourseFilter';
+import { courses } from '../../../tools/mockData';
 
 class CoursesPage extends React.Component {
   state = {
-    redirectToAddCoursePage: false
+    redirectToAddCoursePage: false,
+    courses: []
   };
 
   componentDidMount() {
@@ -47,6 +50,11 @@ class CoursesPage extends React.Component {
     }
   };
 
+  filterCourses = (courseName) => {
+    if (!courseName) return this.setState({ courses: this.props.courses });
+    return this.setState({ courses: courses.filter(course => course.title === courseName) });
+  };
+
   render() {
     return (
       <>
@@ -56,6 +64,7 @@ class CoursesPage extends React.Component {
           <Spinner />
         ) : (
           <>
+            <CourseFilter courses={this.props.courses} filterCourses={this.filterCourses} />
             <button
               style={{ marginBottom: 20 }}
               className="btn btn-primary add-course"
@@ -63,13 +72,13 @@ class CoursesPage extends React.Component {
             >
               Add Course
             </button>
-
             {this.props.courses.length === 0 ? (
               <div>No Data</div>
             ) : (
               <CourseList
                 onDeleteClick={this.handleDeleteCourse}
-                courses={this.props.courses}
+                // courses={this.props.courses}
+                courses={this.state.courses}
               />
             )}
           </>
