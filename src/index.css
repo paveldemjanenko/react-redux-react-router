@@ -6,3 +6,7 @@
 nav {
   padding: 20px 0 20px 0;
 }
+
+.form > h2, div {
+  margin: 0 0 20px 0;
+}

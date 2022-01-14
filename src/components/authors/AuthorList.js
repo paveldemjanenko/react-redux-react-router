@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const AuthorList = ({ authors, onDeleteClick }) => (
-  <table className='table'>
+  <table className="table">
     <thead>
       <tr>
         <th>Name</th>
