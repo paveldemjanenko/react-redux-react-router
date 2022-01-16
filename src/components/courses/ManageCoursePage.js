@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import { Prompt } from 'react-router-dom';
 import * as courseActions from '../../redux/actions/courseActions';
 // import { loadCourses, saveCourse } from '../../redux/actions/courseActions';
 import * as authorActions from '../../redux/actions/authorActions';
@@ -22,6 +23,7 @@ export function ManageCoursePage({
   const [course, setCourse] = useState({...props.course});
   const [errors, setErrors] = useState({});
   const [saving, setSvaing] = useState(false);
+  const [notify, setNotify] = useState(true);
 
   useEffect(() => {
     if (courses.length === 0) {
@@ -64,27 +66,35 @@ export function ManageCoursePage({
     event.preventDefault();
     if (!formIsValid()) return;
     setSvaing(true);
-    saveCourse(course).then(() => {
-      toast.success("Course saved.");
-      history.push("/courses");
-    })
-    .catch(error => {
-      setSvaing(false);
-      setErrors({ onSave: error.message });
-    });
+    saveCourse(course)
+      .then(() => setNotify(false))
+      .then(() => {
+        toast.success("Course saved.");
+        history.push("/courses");
+      })
+      .catch(error => {
+        setSvaing(false);
+        setErrors({ onSave: error.message });
+      });
   }
 
   return authors.length === 0 || course.length === 0 ? (
     <Spinner />
   ) : (
-    <CourseForm
-      course={course}
-      errors={errors}
-      authors={authors}
-      onChange={handleChange}
-      onSave={handleSave}
-      saving={saving}
-    />
+    <>
+      <Prompt
+        when={notify}
+        message='You have unsaved changes, are you sure you want to leave?'
+      />
+      <CourseForm
+        course={course}
+        errors={errors}
+        authors={authors}
+        onChange={handleChange}
+        onSave={handleSave}
+        saving={saving}
+      />
+    </>
   );
 }
 
@@ -107,6 +117,7 @@ function mapStateToProps(state, ownProps) {
   const course = slug && state.courses.length > 0
     ? getCourseBySlug(state.courses, slug)
     : newCourse;
+  if (state.courses.length > 0 && course?.slug !== slug) toast.error('404 - slug does not exist.');
   return {
     course: course,
     courses: state.courses,

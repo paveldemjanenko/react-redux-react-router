@@ -9,11 +9,11 @@ import { toast } from 'react-toastify';
 import Spinner from '../common/Spinner';
 import CourseList from './CourseList';
 import CourseFilter from './CourseFilter';
-import { courses } from '../../../tools/mockData';
 
 class CoursesPage extends React.Component {
   state = {
     redirectToAddCoursePage: false,
+    coursesCount: 0,
     courses: []
   };
 
@@ -42,9 +42,10 @@ class CoursesPage extends React.Component {
   // };
 
   handleDeleteCourse = async course => {
-    toast.success('Course deleted.');
     try {
-      await this.props.actions.deleteCourse(course);
+      await this.props.actions.deleteCourse(course)
+        .then(() => this.setState({ courses: this.props.courses }))
+        .then(() => toast.success('Course deleted.'));
     } catch(error) {
       toast.error("Delete failed." + error.message, { autoClose: false });
     }
@@ -52,19 +53,21 @@ class CoursesPage extends React.Component {
 
   filterCourses = (courseName) => {
     if (!courseName) return this.setState({ courses: this.props.courses });
-    return this.setState({ courses: courses.filter(course => course.title === courseName) });
+    return this.setState({ courses: this.props.courses.filter(course => course.title === courseName) });
   };
 
   render() {
     return (
       <>
         {this.state.redirectToAddCoursePage && <Redirect to="/course" />}
-        <h2>Courses</h2>
+        <h2>{`Courses [${this.state.courses.length}]`}</h2>
         {this.props.loading ? (
           <Spinner />
         ) : (
           <>
-            <CourseFilter courses={this.props.courses} filterCourses={this.filterCourses} />
+            <CourseFilter
+              courses={this.props.courses} 
+              filterCourses={this.filterCourses} />
             <button
               style={{ marginBottom: 20 }}
               className="btn btn-primary add-course"

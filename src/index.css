@@ -7,6 +7,10 @@ nav {
   padding: 20px 0 20px 0;
 }
 
+.table > thead > tr > th {
+  min-width: 150px;
+}
+
 .form > h2, div {
   margin: 0 0 20px 0;
 }
@@ -17,4 +21,22 @@ nav {
 
 .course-filter > select, button {
   margin-left: 20px;
+}
+
+.sort-button {
+  background-color: transparent;
+  border: none;
+
+  padding: 5px 10px;
+  margin: 0;
+  line-height: 1;
+  font-size: 15px;
+  color: black;
+  cursor: pointer;
+
+  transition: transform .05s ease-out;
+}
+
+.sort-reverse {
+  transform: rotate(180deg);
 }
