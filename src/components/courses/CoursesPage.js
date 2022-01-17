@@ -9,12 +9,15 @@ import { toast } from 'react-toastify';
 import Spinner from '../common/Spinner';
 import CourseList from './CourseList';
 import CourseFilter from './CourseFilter';
+import Pagination from '../common/Pagination';
 
 class CoursesPage extends React.Component {
   state = {
     redirectToAddCoursePage: false,
     coursesCount: 0,
-    courses: []
+    courses: [],
+    currentPage: 1,
+    coursesPerPage: 10
   };
 
   componentDidMount() {
@@ -56,7 +59,15 @@ class CoursesPage extends React.Component {
     return this.setState({ courses: this.props.courses.filter(course => course.title === courseName) });
   };
 
+  // Change page
+  paginate = pageNumber => this.setState({ currentPage: pageNumber });
+
   render() {
+    // Get curent posts per page
+    const indexOfLastCourse = this.state.currentPage * this.state.coursesPerPage;
+    const indexOfFirsCourse = indexOfLastCourse - this.state.coursesPerPage;
+    const currentCoursesPerPage = this.props.courses.slice(indexOfFirsCourse, indexOfLastCourse);
+
     return (
       <>
         {this.state.redirectToAddCoursePage && <Redirect to="/course" />}
@@ -78,11 +89,19 @@ class CoursesPage extends React.Component {
             {this.props.courses.length === 0 ? (
               <div>No Data</div>
             ) : (
-              <CourseList
-                onDeleteClick={this.handleDeleteCourse}
-                // courses={this.props.courses}
-                courses={this.state.courses}
-              />
+              <>
+                <CourseList
+                  onDeleteClick={this.handleDeleteCourse}
+                  // courses={this.props.courses}
+                  // courses={this.state.courses}
+                  courses={currentCoursesPerPage}
+                />
+                <Pagination
+                  coursesPerPage={this.state.coursesPerPage}
+                  totalCourses={this.props.courses.length}
+                  paginate={this.paginate}
+                />
+              </>
             )}
           </>
         )}
